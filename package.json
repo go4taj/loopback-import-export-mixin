@@ -1,0 +1,33 @@
+{
+  "name": "@tajahmed/loopback-import-export-mixin",
+  "version": "1.0.0",
+  "description": "Loopback mixin for bulk importing and exporting models",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/go4taj/loopback-import-export-mixin.git"
+  },
+  "keywords": [
+    "loopback",
+    "mixin",
+    "loopback",
+    "import",
+    "loopback",
+    "export",
+    "loopback-import-export",
+    "loopback-import-export",
+    "bulk",
+    "import",
+    "export",
+    "models"
+  ],
+  "author": "Taj Ahmed <go4taj@gmail.com> (https://github.com/go4taj)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/go4taj/loopback-import-export-mixin/issues"
+  },
+  "homepage": "https://github.com/go4taj/loopback-import-export-mixin#readme"
+}
