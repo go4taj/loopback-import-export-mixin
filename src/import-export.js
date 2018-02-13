@@ -7,12 +7,20 @@ module.exports = function (Model, options) {
   Model.export = function (filter, res, cb) {
     res.set('Content-disposition', 'attachment; filename='+Model.modelName+'.csv');
     res.set('Content-Type', 'text/csv');
-    var fields = filter.fields || Object.keys(Model.definition.properties);
+    var fields = filter.fields?filter.fields:Object.keys(Model.definition.properties);
+    let fieldsIsObject = (filter.fields instanceof Object) && !(filter.fields instanceof Array);
+    if(fieldsIsObject){
+      fields = Object.keys(filter.fields).filter(function (value) {
+        return filter.fields[value];
+      });
+      //Reset to all if no fields defined in object
+      if(!fields.length) fields = Object.keys(Model.definition.properties);
+    }
     try {
       Model.find(filter,function (err,values) {
-        var jsonValues = values.map(function (err, value) {
+        var jsonValues = values.map(function (value) {
           var obj = {};
-          Object.keys(fields).forEach(function (field) {
+          fields.forEach(function (field) {
             obj[field] = value[field];
           });
           return obj;
