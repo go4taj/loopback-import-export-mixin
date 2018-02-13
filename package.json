@@ -22,7 +22,9 @@
     "bulk",
     "import",
     "export",
-    "models"
+    "models",
+    "csv",
+    "xls"
   ],
   "author": "Taj Ahmed <go4taj@gmail.com> (https://github.com/go4taj)",
   "license": "ISC",
