@@ -19,7 +19,7 @@ const Book = dataSource.createModel('Book',
   { mixins: { ImportExport: true } }
 );
 
-before(async function() {
+before(function() {
   return Book.create(test_data.books,function (err, books) {
     console.log("Books "+(err?"not inserted":"inserted"));
   });
@@ -33,8 +33,8 @@ describe("when import-export mixin", function() {
     });
   });
 
-  describe("export method is called", function() {
-    it("then it should get all model data in csv file", function(done) {
+  describe("export method is called on book model", function() {
+    it("then it should get all model book names in csv file", function(done) {
       var expectedCSV = '"name"\n"Do Androids Dream of Electric Sheep?"\n' +
         '"The Hitchhiker\'s Guide to the Galaxy (Hitchhiker\'s Guide to the Galaxy, #1)"\n' +
         '"Something Wicked This Way Comes (Green Town, #2)"\n"Pride and Prejudice and Zombies (Pride and Prejudice and Zombies, #1)"'
@@ -45,6 +45,39 @@ describe("when import-export mixin", function() {
           done();
         }});
       Book.export({fields:['name']},mockRes,function(err,res){
+        done(err);
+      });
+    });
+  });
+
+  describe("export method is called on book model without fields argument", function() {
+    it("then it should get all model data in csv file", function(done) {
+      var expectedCSV = '"id","name","author"\n' +
+        '1,"Do Androids Dream of Electric Sheep?","Philip K. Dick"\n' +
+        '2,"The Hitchhiker\'s Guide to the Galaxy (Hitchhiker\'s Guide to the Galaxy, #1)","Douglas Adams "\n' +
+        '3,"Something Wicked This Way Comes (Green Town, #2)","Ray Bradbury "\n' +
+        '4,"Pride and Prejudice and Zombies (Pride and Prejudice and Zombies, #1)","Seth Grahame-Smith"';
+      var mockRes = sinon_express.mockRes({send:function(data){
+          expect(mockRes.set.calledWithExactly("Content-disposition",'attachment; filename=Book.csv')).to.be.true;
+          expect(mockRes.set.calledWithExactly("Content-Type",'text/csv')).to.be.true;
+          expect(data).to.be.equal(expectedCSV);
+          done();
+        }});
+      Book.export({},mockRes,function(err,res){
+        done(err);
+      });
+    });
+  });
+  describe("export method is called on book model without field arguments with no fields", function() {
+    it("then it should get empty model data in csv file", function(done) {
+      var expectedCSV = '';
+      var mockRes = sinon_express.mockRes({send:function(data){
+          expect(mockRes.set.calledWithExactly("Content-disposition",'attachment; filename=Book.csv')).to.be.true;
+          expect(mockRes.set.calledWithExactly("Content-Type",'text/csv')).to.be.true;
+          expect(data).to.be.equal(expectedCSV);
+          done();
+        }});
+      Book.export({fields:[]},mockRes,function(err,res){
         done(err);
       });
     });
