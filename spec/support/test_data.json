@@ -1,0 +1,8 @@
+{
+  "books":[
+    {"name":"Do Androids Dream of Electric Sheep?","author":"Philip K. Dick"},
+    {"name":"The Hitchhiker's Guide to the Galaxy (Hitchhiker's Guide to the Galaxy, #1)","author":"Douglas Adams "},
+    {"name":"Something Wicked This Way Comes (Green Town, #2)","author":"Ray Bradbury "},
+    {"name":"Pride and Prejudice and Zombies (Pride and Prejudice and Zombies, #1)","author":"Seth Grahame-Smith"}
+  ]
+}
