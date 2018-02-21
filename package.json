@@ -4,7 +4,7 @@
   "description": "Loopback mixin for bulk importing and exporting models",
   "main": "index.js",
   "scripts": {
-    "test": "mocka"
+    "test": "./node_modules/.bin/mocha spec"
   },
   "repository": {
     "type": "git",
