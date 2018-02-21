@@ -1,7 +1,8 @@
 # loopback-import-export-mixin
 Loopback mixin for bulk importing and exporting models  
 #### Status
-[![Build Status](https://travis-ci.org/go4taj/loopback-import-export-mixin.svg?branch=develop)](https://travis-ci.org/go4taj/loopback-import-export-mixin)
+Master:[![Build Status](https://travis-ci.org/go4taj/loopback-import-export-mixin.svg?branch=master)](https://travis-ci.org/go4taj/loopback-import-export-mixin)
+Develp:[![Build Status](https://travis-ci.org/go4taj/loopback-import-export-mixin.svg?branch=develop)](https://travis-ci.org/go4taj/loopback-import-export-mixin)
 #### Installation:
 
 ```bash
