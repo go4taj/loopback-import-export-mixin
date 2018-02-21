@@ -6,3 +6,7 @@ before_script:
 cache:
   directories:
     - "node_modules"
+notifications:
+  email:
+    - go4taj@gmail.com
+    - taj.ahmed@otssolutions.com
