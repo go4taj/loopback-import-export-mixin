@@ -1,5 +1,8 @@
 # loopback-import-export-mixin
 Loopback mixin for bulk importing and exporting models  
+#### Disclaimer 
+This is a beta version and is not recommended to use in production code until a stable build is released
+
 #### Status
 Master:[![Build Status](https://travis-ci.org/go4taj/loopback-import-export-mixin.svg?branch=master)](https://travis-ci.org/go4taj/loopback-import-export-mixin)
 Develp:[![Build Status](https://travis-ci.org/go4taj/loopback-import-export-mixin.svg?branch=develop)](https://travis-ci.org/go4taj/loopback-import-export-mixin)
