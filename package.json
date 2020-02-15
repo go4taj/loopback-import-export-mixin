@@ -1,6 +1,6 @@
 {
-  "name": "@tajahmed/loopback-import-export-mixin",
-  "version": "0.1.0",
+  "name": "loopback-import-export-mixin",
+  "version": "0.1.1",
   "description": "Loopback mixin for bulk importing and exporting models",
   "main": "index.js",
   "scripts": {
