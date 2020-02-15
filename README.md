@@ -25,7 +25,7 @@ Add the `mixins` property to your `server/model-config.json`:
     ],
     "mixins": [
       "loopback/common/mixins",
-      "../node_modules/@tajahmed/loopback-import-export-mixin",
+      "../node_modules/@tajahmed/loopback-import-export-mixin/src",
       "../common/mixins"
     ]
   }
@@ -45,7 +45,7 @@ To use with your Models add the `mixins` attribute to the definition object of y
       }
     },
     "mixins": {
-      "ImportExport" : true
+      "ImportExport" : {"export": true}
     }
   }
 ```

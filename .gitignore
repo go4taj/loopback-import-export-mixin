@@ -59,3 +59,4 @@ typings/
 
 .idea
 /loopback-import-export-mixin.iml
+.DS_Store
