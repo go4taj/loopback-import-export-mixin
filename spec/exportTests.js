@@ -16,7 +16,7 @@ const dataSource = app.createDataSource({ connector: app.Memory });
 
 const Book = dataSource.createModel('Book',
   { id: { type: Number, generated: false, id: true }, name: String, author: String },
-  { mixins: { ImportExport: true } }
+  { mixins: { ImportExport: {export:true} } }
 );
 
 before(function() {
@@ -26,10 +26,14 @@ before(function() {
 });
 
 describe("when import-export mixin", function() {
-  
+
   describe("is defined in model definition ", function() {
     it("then it should have import method defined", function() {
       assert.isFunction(Book.export,"Export function should be defined in book model");
+      var methods = Book.sharedClass._methods;
+      var exportMethod = methods.find(m=>m.name=="export");
+      var returnFields = exportMethod.returns.map(m=>m.arg);
+      assert.deepEqual(returnFields,["id","name","author"]);
     });
   });
 
@@ -100,6 +104,7 @@ describe("when import-export mixin", function() {
       });
     });
   });
+
   describe("export method is called on book model with fields argument as Object with id,author fields only", function() {
     it("then it should get only id,author fields data in csv file", function(done) {
       var expectedCSV = '"id","author"\n1,"Philip K. Dick"\n2,"Douglas Adams "\n3,"Ray Bradbury "\n4,"Seth Grahame-Smith"';
@@ -129,6 +134,20 @@ describe("when import-export mixin", function() {
           done(err);
         });
       });
+
+      it("then it should get fields supplied in filter with fields array", function(done) {
+          var expectedCSV = '"id","author"\n1,"Philip K. Dick"\n2,"Douglas Adams "\n3,"Ray Bradbury "\n4,"Seth Grahame-Smith"';
+          var mockRes = sinon_express.mockRes({send:function(data){
+                  expect(mockRes.set.calledWithExactly("Content-disposition",'attachment; filename=Book.csv')).to.be.true;
+                  expect(mockRes.set.calledWithExactly("Content-Type",'text/csv')).to.be.true;
+                  expect(data).to.be.equal(expectedCSV);
+                  done();
+              }});
+          Book.export({fields:["id","author"]},mockRes,function(err,res){
+              done(err);
+          });
+      });
     });
   });
+
 });

@@ -58,3 +58,4 @@ typings/
 .env
 
 .idea
+/loopback-import-export-mixin.iml
