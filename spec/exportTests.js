@@ -150,4 +150,174 @@ describe("when import-export mixin", function() {
     });
   });
 
+  describe("export method is called on book model with with formatRow option defined", function() {
+    const Book = dataSource.createModel('Book',
+      { id: { type: Number, generated: false, id: true }, name: String, author: String },
+      { mixins: { ImportExport: {export:{formatRow:"formatAuthor"}} } }
+    );
+
+    Book.formatAuthor = row=>{
+      row.author = row.author.toUpperCase();
+      return row;
+    };
+    describe("to make author uppercase",()=>{
+      it("then it should show rows with author column in upper case", function(done) {
+        var expectedCSV = '"id","author"\n1,"PHILIP K. DICK"\n2,"DOUGLAS ADAMS "\n3,"RAY BRADBURY "\n4,"SETH GRAHAME-SMITH"';
+        var mockRes = sinon_express.mockRes({send:function(data){
+            expect(mockRes.set.calledWithExactly("Content-disposition",'attachment; filename=Book.csv')).to.be.true;
+            expect(mockRes.set.calledWithExactly("Content-Type",'text/csv')).to.be.true;
+            expect(data).to.be.equal(expectedCSV);
+            done();
+          }});
+        Book.export({fields:{id:true,author:true}},mockRes,function(err,res){
+          done(err);
+        });
+      });
+    });
+    describe("with empty object",()=>{
+      const Book = dataSource.createModel('Book',
+        { id: { type: Number, generated: false, id: true }, name: String, author: String },
+        { mixins: { ImportExport: {export:{}} } }
+      );
+      it("then it should not make any changes to ouput records", function(done) {
+        var expectedCSV = '"id","author"\n1,"Philip K. Dick"\n2,"Douglas Adams "\n3,"Ray Bradbury "\n4,"Seth Grahame-Smith"';
+        var mockRes = sinon_express.mockRes({send:function(data){
+            expect(mockRes.set.calledWithExactly("Content-disposition",'attachment; filename=Book.csv')).to.be.true;
+            expect(mockRes.set.calledWithExactly("Content-Type",'text/csv')).to.be.true;
+            expect(data).to.be.equal(expectedCSV);
+            done();
+          }});
+        Book.export({fields:{id:true,author:true}},mockRes,function(err,res){
+          done(err);
+        });
+      });
+    });
+
+    describe(" as true",()=>{
+      const Book = dataSource.createModel('Book',
+        { id: { type: Number, generated: false, id: true }, name: String, author: String },
+        { mixins: { ImportExport: {export:true} } }
+      );
+      it("then it should not make any changes to ouput records", function(done) {
+        var expectedCSV = '"id","author"\n1,"Philip K. Dick"\n2,"Douglas Adams "\n3,"Ray Bradbury "\n4,"Seth Grahame-Smith"';
+        var mockRes = sinon_express.mockRes({send:function(data){
+            expect(mockRes.set.calledWithExactly("Content-disposition",'attachment; filename=Book.csv')).to.be.true;
+            expect(mockRes.set.calledWithExactly("Content-Type",'text/csv')).to.be.true;
+            expect(data).to.be.equal(expectedCSV);
+            done();
+          }});
+        Book.export({fields:{id:true,author:true}},mockRes,function(err,res){
+          done(err);
+        });
+      });
+    });
+
+    describe("and Model has not defined the function",()=>{
+      before(()=>{
+        Book.formatAuthor = undefined;
+      });
+      after(()=>{
+        Book.formatAuthor = row=>{
+          row.author = row.author.toUpperCase();
+          return row;
+        };
+      });
+      it("then it should not make any changes to ouput records", function(done) {
+        var expectedCSV = '"id","author"\n1,"Philip K. Dick"\n2,"Douglas Adams "\n3,"Ray Bradbury "\n4,"Seth Grahame-Smith"';
+        var mockRes = sinon_express.mockRes({send:function(data){
+            expect(mockRes.set.calledWithExactly("Content-disposition",'attachment; filename=Book.csv')).to.be.true;
+            expect(mockRes.set.calledWithExactly("Content-Type",'text/csv')).to.be.true;
+            expect(data).to.be.equal(expectedCSV);
+            done();
+          }});
+        Book.export({fields:{id:true,author:true}},mockRes,function(err,res){
+          done(err);
+        });
+      });
+    });
+  });
+
+  describe("export method is called on book model with with formatHeaders option defined", function() {
+    const Book = dataSource.createModel('Book',
+      { id: { type: Number, generated: false, id: true }, name: String, author: String },
+      { mixins: { ImportExport: {export:{formatHeaders:"formatHeaders"}} } }
+    );
+
+    Book.formatHeaders = row=>row.map(r=>r.toUpperCase());
+
+    describe("to make headers uppercase",()=>{
+      it("then it should show rows with author column in upper case", function(done) {
+        var expectedCSV = '"ID","AUTHOR"\n1,"Philip K. Dick"\n2,"Douglas Adams "\n3,"Ray Bradbury "\n4,"Seth Grahame-Smith"';
+        var mockRes = sinon_express.mockRes({send:function(data){
+            expect(mockRes.set.calledWithExactly("Content-disposition",'attachment; filename=Book.csv')).to.be.true;
+            expect(mockRes.set.calledWithExactly("Content-Type",'text/csv')).to.be.true;
+            expect(data).to.be.equal(expectedCSV);
+            done();
+          }});
+        Book.export({fields:{id:true,author:true}},mockRes,function(err,res){
+          done(err);
+        });
+      });
+    });
+    describe("with empty object",()=>{
+      const Book = dataSource.createModel('Book',
+        { id: { type: Number, generated: false, id: true }, name: String, author: String },
+        { mixins: { ImportExport: {export:{}} } }
+      );
+      it("then it should not make any changes to ouput records", function(done) {
+        var expectedCSV = '"id","author"\n1,"Philip K. Dick"\n2,"Douglas Adams "\n3,"Ray Bradbury "\n4,"Seth Grahame-Smith"';
+        var mockRes = sinon_express.mockRes({send:function(data){
+            expect(mockRes.set.calledWithExactly("Content-disposition",'attachment; filename=Book.csv')).to.be.true;
+            expect(mockRes.set.calledWithExactly("Content-Type",'text/csv')).to.be.true;
+            expect(data).to.be.equal(expectedCSV);
+            done();
+          }});
+        Book.export({fields:{id:true,author:true}},mockRes,function(err,res){
+          done(err);
+        });
+      });
+    });
+
+    describe(" as true",()=>{
+      const Book = dataSource.createModel('Book',
+        { id: { type: Number, generated: false, id: true }, name: String, author: String },
+        { mixins: { ImportExport: {export:true} } }
+      );
+      it("then it should not make any changes to ouput records", function(done) {
+        var expectedCSV = '"id","author"\n1,"Philip K. Dick"\n2,"Douglas Adams "\n3,"Ray Bradbury "\n4,"Seth Grahame-Smith"';
+        var mockRes = sinon_express.mockRes({send:function(data){
+            expect(mockRes.set.calledWithExactly("Content-disposition",'attachment; filename=Book.csv')).to.be.true;
+            expect(mockRes.set.calledWithExactly("Content-Type",'text/csv')).to.be.true;
+            expect(data).to.be.equal(expectedCSV);
+            done();
+          }});
+        Book.export({fields:{id:true,author:true}},mockRes,function(err,res){
+          done(err);
+        });
+      });
+    });
+
+    describe("and Model has not defined the function",()=>{
+      before(()=>{
+        Book.formatHeaders = undefined;
+      });
+      after(()=> {
+        Book.formatHeaders = row => row.map(r => r.toUpperCase());
+      });
+
+      it("then it should not make any changes to ouput records", function(done) {
+        var expectedCSV = '"id","author"\n1,"Philip K. Dick"\n2,"Douglas Adams "\n3,"Ray Bradbury "\n4,"Seth Grahame-Smith"';
+        var mockRes = sinon_express.mockRes({send:function(data){
+            expect(mockRes.set.calledWithExactly("Content-disposition",'attachment; filename=Book.csv')).to.be.true;
+            expect(mockRes.set.calledWithExactly("Content-Type",'text/csv')).to.be.true;
+            expect(data).to.be.equal(expectedCSV);
+            done();
+          }});
+        Book.export({fields:{id:true,author:true}},mockRes,function(err,res){
+          done(err);
+        });
+      });
+    });
+  });
+
 });

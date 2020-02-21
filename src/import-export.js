@@ -1,6 +1,10 @@
 const debug = require("debug");
 const json2csv = require("json2csv");
 
+var validatedFunction = (func)=>{
+  return typeof func==='function'?func:(a)=>a;
+};
+
 module.exports = function (Model, options) {
   debug('ImportExport mixin for Model %s', Model.modelName);
 
@@ -22,6 +26,21 @@ module.exports = function (Model, options) {
       }
       try {
         Model.find(filter,function (err,values) {
+          if(typeof options.export === 'object'){
+            if(options.export.formatRow){
+              values = values.map(validatedFunction(Model[options.export.formatRow]));
+            }
+            if(options.export.formatHeaders){
+              var newFields = validatedFunction(Model[options.export.formatHeaders])(fields);
+              values = values.map(val=>{
+                fields.forEach((field,i)=>{
+                  val[newFields[i]] = val[fields[i]]
+                });
+                return val;
+              });
+              fields = newFields;
+            }
+          }
           var csv = json2csv({ data:values , fields: fields});
           res.send(csv);
         });

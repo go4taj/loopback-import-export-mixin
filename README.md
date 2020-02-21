@@ -48,8 +48,35 @@ To use with your Models add the `mixins` attribute to the definition object of y
     }
   }
 ```
-![alt text](src/asset/explorer-export.png "Explorer demo")
 
+##### Modify/Format your headers and rows before you export
+
+```json
+  {
+    "name": "Widget",
+    "properties": {
+      "name": {
+        "type": "string"
+      }
+    },
+    "mixins": {
+      "ImportExport": {
+        "export": {
+          "formatHeaders": "funcToFormatHeaders", // Optional
+          "formatRow": "funcToFormatRecord" // Optional
+        }
+      }
+    }
+  }
+```
+Then defined the function implemenation in your <model>.js for Example to make all headers upper case. define the funciton as below
+
+```javascript
+    ModelName.funcToFormatHeaders = row=>row.map(r=>r.toUpperCase());
+```
+
+ 
+![alt text](src/asset/explorer-export.png "Explorer demo")
 
 ##### LICENSE
 [Apache License](./LICENSE)
