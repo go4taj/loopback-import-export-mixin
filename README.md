@@ -44,7 +44,7 @@ To use with your Models add the `mixins` attribute to the definition object of y
       }
     },
     "mixins": {
-      "ImportExport" : {"export": true}
+      "ImportExport" : {"export": {}}
     }
   }
 ```
